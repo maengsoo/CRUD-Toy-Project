@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import common.DBConnectionOracle;
 import dto.Book_dto;
+import dto.Rent_dto;
 
 
 public class Book_dao {
@@ -155,7 +157,35 @@ public class Book_dao {
 		}finally {
 			common.close(connection, ps);
 		}
-		
 		return result;
+	}
+	
+	public ArrayList<Book_dto> getBookAllView(){
+		ArrayList<Book_dto> arr = new ArrayList<>();
+		String query = " select no, name, publisher, writer, to_char(reg_date, 'yyyy-mm-dd'), rent_gubun from b13_book ";
+		
+		try {
+			connection = common.getConnection();
+			ps = connection.prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				String no 		  = rs.getString(1);
+				String name  	  = rs.getString(2);
+				String publisher  = rs.getString(3);
+				String writer     = rs.getString(4);
+				String rent_date  = rs.getString(5);
+				String rent_gubun = rs.getString(6);
+				Book_dto dto = new Book_dto(no, name, publisher, writer, rent_date, rent_gubun);
+				arr.add(dto);
+			}
+		}catch(SQLException se) {
+			System.out.println(" getBookAllView() query 오류 " + query);
+		}catch(Exception e) {
+			System.out.println(" getBookAllView() 오류 ");
+		}finally {
+			common.close(connection, ps, rs);
+		}
+		return arr;
 	}
 }

@@ -11,11 +11,13 @@ public class BookRent {
 
 	public static void main(String[] args) {
 		
-		Scanner sc 	   = new Scanner(System.in);
+		Scanner sc 	  = new Scanner(System.in);
 		int workGubun = 0;
 		
 		do {
+			System.out.println("=====BookRent MainPage=======================================");
 			System.out.println(" 회원관리[1], 도서관리[2], 대여[3], 반납[4], 시스템종료[0] ? ");
+			System.out.println("=============================================================");
 			workGubun = sc.nextInt();
 			
 			if(workGubun == 1) MemberManagement.member();

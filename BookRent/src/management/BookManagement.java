@@ -1,5 +1,6 @@
 package management;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import dao.Book_dao;
@@ -10,20 +11,20 @@ public class BookManagement {
 	public static void book() {
 		
 		Scanner sc 	   = new Scanner(System.in);
-		Book_dao dao  = new Book_dao();
+		Book_dao bookDao  = new Book_dao();
 
 		int gubun = 0;
 		
 		do {
-		System.out.println("도서 - 조회[1], 등록[2], 수정[3], 삭제[4], 이전[0]");
+		System.out.println("도서 - 조회[1], 등록[2], 수정[3], 삭제[4], 전체조회[5] 이전[0]");
 		gubun = sc.nextInt();
 		
-			//도서조회
+			//도서조회[1]
 			if(gubun == 1) {
 				System.out.println(" 조회하실 도서번호나 도서명을 입력해주시오 : ");
 				String book = sc.next();
 				
-				Book_dto dto = dao.getBookDataView(book);
+				Book_dto dto = bookDao.getBookDataView(book);
 				
 				if(dto == null) System.out.println(book+" 검색하신 정보가 존재하지 않습니다");
 				if(dto != null) {
@@ -36,7 +37,7 @@ public class BookManagement {
 				}
 			}
 			
-			//도서등록
+			//도서등록[2]
 			if(gubun == 2) {
 				
 				System.out.println(" 등록하실 도서번호는 ex[K000]?");
@@ -57,17 +58,17 @@ public class BookManagement {
 				String rent_gubun  = "Y";
 				
 				Book_dto dto = new Book_dto(no, name, publisher, writer, reg_date, rent_gubun);
-				int result = dao.saveBook(dto);
+				int result = bookDao.saveBook(dto);
 				
 				if(result == 1) System.out.println(" 등록 되었습니다.");
 				if(result == 0) System.out.println(" 등록 실패. ");
 			}
 			
-			//도서수정
+			//도서수정[3]
 			if(gubun == 3) {
 				System.out.println(" 수정하실 도서번호나 도서명을 입력해주시오  ");
 				String no = sc.next();
-				Book_dto dto = dao.getBookDataView(no);
+				Book_dto dto = bookDao.getBookDataView(no);
 				
 				if(dto == null) System.out.println(no+"수정 할 정보가 존재하지 않습니다");
 				if(dto != null) {
@@ -94,19 +95,19 @@ public class BookManagement {
 	                    System.out.println(" 등록날짜 : "+dto.getReg_date()+" -> ");                     
 	                    String reg_date = sc.next();
 	                    
-	                    int result = dao.updateBook(no, name, publisher, writer, reg_date);
+	                    int result = bookDao.updateBook(no, name, publisher, writer, reg_date);
 	                    if(result == 1) System.out.println("=====수정완료=================");
 	                    if(result == 0) System.out.println("=====수정오류================="); 
 					}
 				}
 			}
 			
-			//도서삭제
+			//도서삭제[4]
 			if(gubun == 4) {
 				System.out.println(" ===삭제 페이지 입니다.======================");
 				System.out.println(" 삭제 하 실 도서명이나 도서번호를 입력해주세요. ");
 				String book = sc.next();
-				Book_dto dto = dao.getBookDataView(book);
+				Book_dto dto = bookDao.getBookDataView(book);
 				
 				if(dto == null) System.out.println(book+" 검색하신 정보가 존재하지 않습니다");
 				if(dto != null) {
@@ -122,12 +123,38 @@ public class BookManagement {
 	
 					if(updateGubun.equals("Y") || updateGubun.equals("y") || updateGubun.equals("ㅛ")) {
 					
-						int result = dao.deleteBook(book);
+						int result = bookDao.deleteBook(book);
 						if(result == 1)System.out.println("=====삭제완료=================");
 	                    if(result == 0)System.out.println("=====삭제오류================="); 
 					}
 				}
 			}
+			
+			//전체조회[5]
+			if(gubun == 5) {
+				
+				ArrayList<Book_dto> arr = bookDao.getBookAllView();
+				
+				if(arr == null) System.out.println("목록이 존재하지 않습니다.");
+				if(arr != null) {
+					
+					System.out.println("======================================================================");
+					System.out.println("no\t -name\t\t-publisher\t-writer -reg_date -rent_gubun");
+					System.out.println("======================================================================");
+					
+					for(int i = 0; i < arr.size(); i++) {
+						System.out.print(arr.get(i).getNo()+"\t");
+						System.out.print(arr.get(i).getName()+"\t");
+						System.out.print(arr.get(i).getPublisher()+"\t\t");
+						System.out.print(arr.get(i).getWriter()+"\t");
+						System.out.print(arr.get(i).getReg_date()+"\t");
+						System.out.print(arr.get(i).getRent_gubun()+"\n");
+					}
+					System.out.println("======================================================================");
+
+				}
+			}
+		
 		}while(gubun != 0);
 		
 	

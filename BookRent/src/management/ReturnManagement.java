@@ -90,9 +90,6 @@ public class ReturnManagement {
 					System.out.println("======================================================");
 
 				}
-				
-				
-				
 			}
 			
 		} while(gubun != 0);

@@ -19,7 +19,10 @@ public class MemberManagement extends BookRent{
 
 		//회원관리
 		do {
+			System.out.println("=====MemberManagement Page===================================");
 			System.out.println(" 회원조회[1], 등록[2], 수정[3], 삭제[4], 이전[0] ? ");
+			System.out.println("=============================================================");
+
 			gubun = sc.nextInt();
 			
 			if(gubun == 1) {
